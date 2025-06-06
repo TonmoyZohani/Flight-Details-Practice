@@ -1,0 +1,52 @@
+{
+  "brands": [
+    {
+      "brandId": "BA001",
+      "brandName": "British Airways",
+      "agentPrice": 250,
+      "baggage": "20kg",
+      "structure": {
+        "type": "refundable",
+        "fee": 50,
+        "notes": "Full refund allowed"
+      },
+      "nonStructure": {
+        "type": "meal",
+        "included": true,
+        "description": "Complimentary meal"
+      }
+    },
+    {
+      "brandId": "BA002",
+      "brandName": "Qantas",
+      "agentPrice": 300,
+      "baggage": "25kg",
+      "structure": {},  
+      "nonStructure": {}  
+    },
+    {
+      "brandId": "BA003",
+      "brandName": "Emirates",
+      "agentPrice": 350,
+      "baggage": "20kg",
+      "structure": {
+        "type": "priorityBoarding",
+        "fee": 30,
+        "notes": "Zone 1 boarding"
+      },
+      "nonStructure": {
+        "type": "entertainment",
+        "included": false,
+        "description": "Premium entertainment package"
+      }
+    },
+    {
+      "brandId": "BA004",
+      "brandName": "Singapore Airlines",
+      "agentPrice": 370,
+      "baggage": "15kg",
+      "structure": {},  
+      "nonStructure": {}  
+    }
+  ]
+}
