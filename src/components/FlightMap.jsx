@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { SwipeableDrawer, Button, Box, Typography } from "@mui/material";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  LoadScript,
+  Marker,
+  Polyline,
+} from "@react-google-maps/api";
 import { trackingData } from "../utils/trackingData";
 import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
 
@@ -111,7 +116,7 @@ const FlightMap = () => {
                   />
                 ))}
 
-                {/* Airplane Live Marker */}
+                {/* Plane Live Marker */}
                 {trackerMap?.tracks?.length > 0 && (
                   <Marker
                     position={{
@@ -122,14 +127,66 @@ const FlightMap = () => {
                       url:
                         "data:image/svg+xml;charset=UTF-8," +
                         encodeURIComponent(`
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="%231976d2">
-              <path d="M10.18 9"/>
-              <path d="M10.18 9 21 12l-10.82 3L3 21v-4l6.18-3L3 11V7l7.18 2z"/>
+            <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48" viewBox="0 0 24 24" fill="#1976d2">
+              <path d="M10.18 9 21 12l-10.82 3L3 21v-4l6.18-3L3 11V7z"/>
             </svg>
           `),
                       scaledSize: new window.google.maps.Size(40, 40),
                       rotation: trackerMap.tracks.at(-1).track || 0,
-                      anchor: new window.google.maps.Point(12, 12), // center the icon
+                      anchor: new window.google.maps.Point(20, 20),
+                    }}
+                  />
+                )}
+
+                {/* Solid Polyline: Departure → Current (Blue) */}
+                {trackerMap?.tracks?.length > 0 && (
+                  <Polyline
+                    path={[
+                      {
+                        lat: Number(trackerMap.departure.latitude),
+                        lng: Number(trackerMap.departure.longitude),
+                      },
+                      {
+                        lat: trackerMap.tracks.at(-1).latitude,
+                        lng: trackerMap.tracks.at(-1).longitude,
+                      },
+                    ]}
+                    options={{
+                      strokeColor: "#1976D2", // Blue
+                      strokeOpacity: 1,
+                      strokeWeight: 3,
+                    }}
+                  />
+                )}
+
+                {/* Dotted Polyline: Current → Arrival (Orange Dotted) */}
+                {trackerMap?.tracks?.length > 0 && (
+                  <Polyline
+                    path={[
+                      {
+                        lat: trackerMap.tracks.at(-1).latitude,
+                        lng: trackerMap.tracks.at(-1).longitude,
+                      },
+                      {
+                        lat: Number(trackerMap.arrival.latitude),
+                        lng: Number(trackerMap.arrival.longitude),
+                      },
+                    ]}
+                    options={{
+                      strokeColor: "#FF9800", // Orange
+                      strokeOpacity: 1,
+                      strokeWeight: 2,
+                      icons: [
+                        {
+                          icon: {
+                            path: "M 0,-1 0,1",
+                            strokeOpacity: 1,
+                            scale: 4,
+                          },
+                          offset: "0",
+                          repeat: "10px",
+                        },
+                      ],
                     }}
                   />
                 )}
