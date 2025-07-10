@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import FlightDetailsSection from "./components/FlightDetailsSection";
 import { Box, Tab, Tabs, Typography } from "@mui/material";
+import FlightMap from "./components/FlightMap";
 
 const flightArrData = [
   {
@@ -9,7 +10,7 @@ const flightArrData = [
     brands: [
       {
         brandId: "BA001",
-        brandName: "British Airways", 
+        brandName: "British Airways",
         agentPrice: 250,
         baggage: "20kg",
         structure: {
@@ -25,13 +26,13 @@ const flightArrData = [
       },
       {
         brandId: "BA002",
-        brandName: "Qantas",  
+        brandName: "Qantas",
         agentPrice: 300,
         baggage: "25kg",
       },
       {
         brandId: "BA003",
-        brandName: "Emirates",  
+        brandName: "Emirates",
         agentPrice: 350,
         baggage: "20kg",
         structure: {
@@ -58,7 +59,7 @@ const flightArrData = [
     brands: [
       {
         brandId: "BA001",
-        brandName: "British Airways",  // Added brand name
+        brandName: "British Airways", // Added brand name
         agentPrice: 400,
         baggage: "30kg",
         structure: {
@@ -74,7 +75,7 @@ const flightArrData = [
       },
       {
         brandId: "BA004",
-        brandName: "Singapore Airlines",  // Added brand name
+        brandName: "Singapore Airlines", // Added brand name
         agentPrice: 370,
         baggage: "15kg",
       },
@@ -97,7 +98,9 @@ function App() {
 
   return (
     <>
-      <Typography variant="h4" sx={{color:"navy"}}>
+      <FlightMap />
+      {/* <Typography>Map</Typography> */}
+      {/* <Typography variant="h4" sx={{color:"navy"}}>
         Flight Tabs
       </Typography>
 
@@ -109,7 +112,7 @@ function App() {
 
       <Box mt={2}>
         <FlightDetailsSection flightArrData={flightArrData} tabType={tabType} />
-      </Box>
+      </Box> */}
     </>
   );
 }

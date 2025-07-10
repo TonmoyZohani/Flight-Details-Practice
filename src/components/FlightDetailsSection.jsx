@@ -1,28 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Box } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 
 const FlightDetailsSection = ({ flightArrData, tabType }) => {
-  // Extract all brands from all flights
-  const allBrands = flightArrData.flatMap(flight => flight.brands);
-  
-  // State to store the selected brand
-  const [selectedBrand, setSelectedBrand] = useState(null);
-  const [selectedBrandId, setSelectedBrandId] = useState("BA001"); // Default brand ID
+  const allBrands = flightArrData.flatMap((flight) => flight.brands);
+  const [selectedBrandId, setSelectedBrandId] = useState("BA001");
 
-  useEffect(() => {
-    // Find the brand in the flightArrData (no need for fetch if data is already in props)
-    const foundBrand = allBrands.find(brand => brand.brandId === selectedBrandId);
-    setSelectedBrand(foundBrand);
-  }, [selectedBrandId, flightArrData]);
+  const { data: selectedBrand } = useQuery({
+    queryKey: ["brand", selectedBrandId],
+    queryFn: () => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          const foundBrand = allBrands.find(
+            (brand) => brand.brandId === selectedBrandId
+          );
+          resolve(foundBrand || null);
+        }, 0);
+      });
+    },
+    initialData: () =>
+      allBrands.find((brand) => brand.brandId === selectedBrandId) || null,
+    staleTime: Infinity,
+    enabled: !!selectedBrandId,
+  });
 
-  console.log("All brands:", allBrands);
-  console.log("Selected brand:", selectedBrand);
-  console.log("Tab Type:", tabType);
+  console.log("All Brands", allBrands);
+  console.log("Selected Brand")
 
   return (
     <Box>
-      {/* Brand selector dropdown */}
-      <select 
+      <select
         value={selectedBrandId}
         onChange={(e) => setSelectedBrandId(e.target.value)}
         style={{ marginBottom: "20px" }}
@@ -34,8 +41,7 @@ const FlightDetailsSection = ({ flightArrData, tabType }) => {
         ))}
       </select>
 
-      {/* Display brand details */}
-      {selectedBrand && (
+      {/* {selectedBrand ? (
         <div>
           <h2>{selectedBrand.brandName} Details</h2>
           <p>Price: ${selectedBrand.agentPrice}</p>
@@ -55,7 +61,9 @@ const FlightDetailsSection = ({ flightArrData, tabType }) => {
             <p>No non-structure details available</p>
           )}
         </div>
-      )}
+      ) : (
+        <p>Loading brand details...</p>
+      )} */}
     </Box>
   );
 };
