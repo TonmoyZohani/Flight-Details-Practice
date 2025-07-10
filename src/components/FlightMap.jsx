@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { SwipeableDrawer, Button, Box, Typography } from "@mui/material";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { trackingData } from "../utils/trackingData";
-import AirplanemodeActiveIcon from '@mui/icons-material/AirplanemodeActive';
+import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
 
 const containerStyle = {
   width: "100%",
@@ -11,9 +11,8 @@ const containerStyle = {
 
 const defaultCenter = {
   lat: 23.8103, // Example: Dhaka (Hazrat Shahjalal Intl Airport)
-  lng: 90.4125
+  lng: 90.4125,
 };
-
 
 const FlightMap = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -103,6 +102,7 @@ const FlightMap = () => {
                 }
                 zoom={8}
               >
+                {/* Departure and Arrival Markers */}
                 {destinationData.map((marker) => (
                   <Marker
                     key={marker.id}
@@ -110,6 +110,29 @@ const FlightMap = () => {
                     label={marker.label}
                   />
                 ))}
+
+                {/* Airplane Live Marker */}
+                {trackerMap?.tracks?.length > 0 && (
+                  <Marker
+                    position={{
+                      lat: trackerMap.tracks.at(-1).latitude,
+                      lng: trackerMap.tracks.at(-1).longitude,
+                    }}
+                    icon={{
+                      url:
+                        "data:image/svg+xml;charset=UTF-8," +
+                        encodeURIComponent(`
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="%231976d2">
+              <path d="M10.18 9"/>
+              <path d="M10.18 9 21 12l-10.82 3L3 21v-4l6.18-3L3 11V7l7.18 2z"/>
+            </svg>
+          `),
+                      scaledSize: new window.google.maps.Size(40, 40),
+                      rotation: trackerMap.tracks.at(-1).track || 0,
+                      anchor: new window.google.maps.Point(12, 12), // center the icon
+                    }}
+                  />
+                )}
               </GoogleMap>
             </LoadScript>
           </Box>
